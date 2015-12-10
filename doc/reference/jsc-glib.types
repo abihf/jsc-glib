@@ -1,0 +1,3 @@
+jsc_context_get_type
+jsc_object_get_type
+jsc_value_get_type

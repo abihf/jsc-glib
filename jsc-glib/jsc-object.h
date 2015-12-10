@@ -21,11 +21,19 @@
 #define _JSC_OBJECT_H_
 
 #include <glib-object.h>
-
 typedef struct _JSCValue JSCValue;
 
-
 G_BEGIN_DECLS
+/**
+ * SECTION:jsc-object
+ * @short_description: Class for storing javascript object
+ * @title: JSCObject
+ * @stability: Unstable
+ * @include: jsc-glib.h
+ *
+ * This class hold JSObjectRef and it's context
+ */
+
 
 #define JSC_TYPE_OBJECT             (jsc_object_get_type ())
 #define JSC_OBJECT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), JSC_TYPE_OBJECT, JSCObject))
@@ -37,6 +45,24 @@ G_BEGIN_DECLS
 typedef struct _JSCObjectClass JSCObjectClass;
 typedef struct _JSCObject JSCObject;
 typedef struct _JSCObjectPrivate JSCObjectPrivate;
+
+/**
+ * JSCPropertyAttributeFlags:
+ * @JSC_PROPERTY_ATTRIBUTE_NONE: No flags.
+ * @JSC_PROPERTY_ATTRIBUTE_RO: Property is read only.
+ * @JSC_PROPERTY_ATTRIBUTE_NO_ENUM: Property is not enumerable.
+ * @JSC_PROPERTY_ATTRIBUTE_NO_DELETE: Property is not deletable.
+ *
+ * Flags used when setting property of #JSCObject
+ */
+typedef enum {
+  JSC_PROPERTY_ATTRIBUTE_NONE       = 0,        /*< nick=none >*/
+  JSC_PROPERTY_ATTRIBUTE_RO         = (1 << 0), /*< nick=ro >*/
+  JSC_PROPERTY_ATTRIBUTE_NO_ENUM    = (1 << 1), /*< nick=no-enum >*/
+  JSC_PROPERTY_ATTRIBUTE_NO_DELETE  = (1 << 2)  /*< nick=no-delete >*/
+} JSCPropertyAttributeFlags;
+
+
 
 struct _JSCObjectClass
 {

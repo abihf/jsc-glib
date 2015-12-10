@@ -1,9 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = jsc-glib po tests
+SUBDIRS = jsc-glib po tests doc
 
--include $(top_srcdir)/git.mk
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
 
 dist_doc_DATA = \
@@ -36,3 +36,5 @@ MAINTAINERCLEANFILES = \
 # Remove doc directory on uninstall
 uninstall-local:
 	-rm -r $(docdir)
+
+-include $(top_srcdir)/git.mk

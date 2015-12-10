@@ -31,7 +31,6 @@ jscincludedir = $(includedir)/jsc-glib-1.0
 jscinclude_HEADERS = \
 	jsc-glib.h \
 	jsc-context.h \
-	jsc-enums.h \
 	jsc-object.h \
 	jsc-value.h \
 	jsc-enumtypes.h \
@@ -40,16 +39,19 @@ jscinclude_HEADERS = \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = jsc-glib-1.0.pc
 
-jsc-enumtypes.c: jsc-enums.h jsc-enumtypes.c.template
+
+enum_headers = $(filter-out jsc-enumtypes.h,$(jscinclude_HEADERS))
+
+jsc-enumtypes.c: $(enum_headers) jsc-enumtypes.c.template
 	glib-mkenums --identifier-prefix JSC \
-	    --template $(srcdir)/jsc-enumtypes.c.template \
-	    $(srcdir)/jsc-enums.h > $(srcdir)/jsc-enumtypes.c
+	    --template jsc-enumtypes.c.template \
+	    $(enum_headers) > $(srcdir)/jsc-enumtypes.c
 	    
 
-jsc-enumtypes.h: jsc-enums.h jsc-enumtypes.h.template
+jsc-enumtypes.h: $(enum_headers) jsc-enumtypes.h.template
 	glib-mkenums --identifier-prefix JSC \
-	    --template $(srcdir)/jsc-enumtypes.h.template \
-	    $(srcdir)/jsc-enums.h > $(srcdir)/jsc-enumtypes.h
+	    --template jsc-enumtypes.h.template \
+	    $(enum_headers) > $(srcdir)/jsc-enumtypes.h
 
 BUILT_SOURCES = \
 	jsc-enumtypes.c \

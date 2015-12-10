@@ -20,7 +20,6 @@
 #ifndef _JSC_GLIB_H_
 #define _JSC_GLIB_H_
 
-#include "jsc-enums.h"
 #include "jsc-enumtypes.h"
 #include "jsc-error.h"
 #include "jsc-context.h"

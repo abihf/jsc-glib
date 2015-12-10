@@ -1,4 +1,12 @@
 # List of source files containing translatable strings.
 
-src/jsc-context.c
-src/jsc-object.c
+jsc-glib/jsc-context.c
+jsc-glib/jsc-context.h
+jsc-glib/jsc-error.c
+jsc-glib/jsc-error.h
+jsc-glib/jsc-glib.h
+jsc-glib/jsc-object.c
+jsc-glib/jsc-object.h
+jsc-glib/jsc-value.c
+jsc-glib/jsc-value.h
+jsc-glib/private.h

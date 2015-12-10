@@ -22,10 +22,26 @@
 
 #include <glib-object.h>
 
+/**
+ * JSCObject: (skip)
+ */
 typedef struct _JSCObject JSCObject;
+/**
+ * JSCValue: (skip)
+ */
 typedef struct _JSCValue JSCValue;
 
+/**
+ * SECTION:jsc-context
+ * @short_description: JavaScriptCore runtime context
+ * @title: JSCContext
+ * @stability: Unstable
+ * @include: jsc-glib.h
+ *
+ * This class hold JSContextRef
+ */
 G_BEGIN_DECLS
+
 
 #define JSC_TYPE_CONTEXT             (jsc_context_get_type ())
 #define JSC_CONTEXT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), JSC_TYPE_CONTEXT, JSCContext))
@@ -52,21 +68,66 @@ struct _JSCContext
 
 GType jsc_context_get_type (void) G_GNUC_CONST;
 
+/**
+ * jsc_context_new: (constructor)
+ * 
+ * create new #JSCContext 
+ * 
+ * Returns: a #JSCContext
+ */
 JSCContext *
 jsc_context_new();
 
+/**
+ * jsc_context_new_from_native: (constructor)
+ * @native_context: JSContextRef or JSGlobalContextRef from JavaScriptCore
+ * 
+ * create new #JSCContext from JSContextRef 
+ * 
+ * Returns: a #JSCContext
+ */
 JSCContext *
-jsc_context_new_from_native(gpointer *native_context);
+jsc_context_new_from_native (gpointer *native_context);
 
+/**
+ * jsc_context_get_global_object: (method)
+ * @context: a #JSCContext
+ * 
+ * get global object that associated to this context
+ * 
+ * Returns: global #JSCObject
+ */
 JSCObject *
 jsc_context_get_global_object(JSCContext *context);
 
+/**
+ * jsc_context_evaluate_script: (method)
+ * @context: a #JSCContext
+ * @script: string contains javascript to be evaluted
+ * @error: (nullable): set when evaluation throws exception
+ * 
+ * Evaluate javascript in this context. See #jsc_context_evaluate_script_full
+ * 
+ * Returns: result from evaluated script
+ */
 JSCValue *
 jsc_context_evaluate_script(JSCContext *context,
                             const gchar *script,
                             GError **error);
 
-
+/**
+ * jsc_context_evaluate_script_full: (method)
+ * @context: a #JSCContext
+ * @script: string contains javascript to be evaluted
+ * @this_object: (nullable): value of this. If NULL, use global object
+ * @source_url: (nullable): source url used for error reporting
+ * @first_line_number: base line number used for error reporting
+ * @error: (nullable): set when evaluation throws exception
+ * 
+ * evaluate javascript in this context
+ * 
+ * Returns: result from evaluated script
+ */
 JSCValue *
 jsc_context_evaluate_script_full(JSCContext *context,
                                  const gchar *script,

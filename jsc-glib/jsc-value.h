@@ -24,6 +24,16 @@
 
 G_BEGIN_DECLS
 
+/**
+ * SECTION:jsc-value
+ * @short_description: Class for storing javascript value
+ * @title: JSCValue
+ * @stability: Unstable
+ * @include: jsc-glib.h
+ *
+ * This class hold JSValueRef and it's context
+ */
+
 #define JSC_TYPE_VALUE             (jsc_value_get_type ())
 #define JSC_VALUE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), JSC_TYPE_VALUE, JSCValue))
 #define JSC_VALUE_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), JSC_TYPE_VALUE, JSCValueClass))
@@ -34,6 +44,16 @@ G_BEGIN_DECLS
 typedef struct _JSCValueClass JSCValueClass;
 typedef struct _JSCValue JSCValue;
 typedef struct _JSCValuePrivate JSCValuePrivate;
+
+
+typedef enum {
+	JSC_VALUE_TYPE_UNDEFINED,
+	JSC_VALUE_TYPE_NULL,
+	JSC_VALUE_TYPE_BOOLEAN,
+	JSC_VALUE_TYPE_NUMBER,
+	JSC_VALUE_TYPE_STRING,
+	JSC_VALUE_TYPE_OBJECT
+} JSCValueType;
 
 
 struct _JSCValueClass

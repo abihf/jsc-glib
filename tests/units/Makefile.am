@@ -10,8 +10,8 @@ test_SOURCES =  \
 	shared.h \
 	context.c
 
-test_LDADD = $(JSC_GLIB_LIBS) ../../src/libjsc-glib-1.0.la
+test_LDADD = $(JSC_GLIB_LIBS) ../../jsc-glib/libjsc-glib-1.0.la
 
-AM_CPPFLAGS = $(JSC_GLIB_CFLAGS) 
+AM_CPPFLAGS = $(JSC_GLIB_CFLAGS) -I$(top_srcdir)/jsc-glib
 
 -include $(top_srcdir)/git.mk

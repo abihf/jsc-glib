@@ -42,14 +42,14 @@ pkgconfig_DATA = jsc-glib-1.0.pc
 
 jsc-enumtypes.c: jsc-enums.h jsc-enumtypes.c.template
 	glib-mkenums --identifier-prefix JSC \
-	    --template $(top_srcdir)/src/jsc-enumtypes.c.template \
-	    $(top_srcdir)/src/jsc-enums.h > $(top_srcdir)/src/jsc-enumtypes.c
+	    --template $(srcdir)/jsc-enumtypes.c.template \
+	    $(srcdir)/jsc-enums.h > $(srcdir)/jsc-enumtypes.c
 	    
 
 jsc-enumtypes.h: jsc-enums.h jsc-enumtypes.h.template
 	glib-mkenums --identifier-prefix JSC \
-	    --template $(top_srcdir)/src/jsc-enumtypes.h.template \
-	    $(top_srcdir)/src/jsc-enums.h > $(top_srcdir)/src/jsc-enumtypes.h
+	    --template $(srcdir)/jsc-enumtypes.h.template \
+	    $(srcdir)/jsc-enums.h > $(srcdir)/jsc-enumtypes.h
 
 BUILT_SOURCES = \
 	jsc-enumtypes.c \

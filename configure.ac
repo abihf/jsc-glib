@@ -31,8 +31,8 @@ GTK_DOC_CHECK(1.9)
 
 AC_OUTPUT([
 Makefile
-src/jsc-glib-1.0.pc
-src/Makefile
+jsc-glib/jsc-glib-1.0.pc
+jsc-glib/Makefile
 po/Makefile.in
 tests/Makefile
 tests/units/Makefile])

@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = src po tests
+SUBDIRS = jsc-glib po tests
 
 -include $(top_srcdir)/git.mk
 

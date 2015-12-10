@@ -18,7 +18,7 @@
  */
 
 #include <glib.h>
-#include "../../src/jsc-glib.h"
+#include "jsc-glib.h"
 
 typedef  struct {
 	JSCContext *context;

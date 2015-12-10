@@ -1,0 +1,9 @@
+=== JavaScriptCore binding for GObject ===
+
+jsc-glib is a library for accessing JavaScriptCore API in GObject style
+
+TODO: complete documentation
+
+Dependencies:
+   * glib2 > 2.40
+   * webkit2gtk > 2.8

@@ -1,0 +1,23 @@
+/*** BEGIN file-header ***/
+#ifndef _JSC_ENUM_TYPES_H_
+#define _JSC_ENUM_TYPES_H_
+
+#include <glib-object.h>
+
+G_BEGIN_DECLS
+/*** END file-header ***/
+
+/*** BEGIN file-production ***/
+
+/*** END file-production ***/
+
+/*** BEGIN value-header ***/
+GLIB_AVAILABLE_IN_ALL GType @enum_name@_get_type (void) G_GNUC_CONST;
+#define @ENUMPREFIX@_TYPE_@ENUMSHORT@ (@enum_name@_get_type ())
+/*** END value-header ***/
+
+/*** BEGIN file-tail ***/
+G_END_DECLS
+
+#endif /* _JSC_ENUM_TYPES_H_ */
+/*** END file-tail ***/

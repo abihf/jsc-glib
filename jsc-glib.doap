@@ -1,0 +1,40 @@
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+
+  <name>jsc-glib</name>
+
+  <shortdesc xml:lang="en">
+    JavaScriptCore binding for GObject
+  </shortdesc>
+  <shortdesc xml:lang="id">
+    Binding JavaScriptCore untuk GObject
+  </shortdesc>
+
+  <description xml:lang="en">
+    TODO: make description
+  </description>
+
+  <created>2015-12-09</created>
+
+  <homepage rdf:resource="http://github.com/abihf/jsc-glib" />
+
+  <download-page rdf:resource="http://github.com/abihf/jsc-glib/releases" />
+
+  <bug-database rdf:resource="http://github.com/abihf/jsc-glib/issues" />
+
+  <programming-language>C</programming-language>
+  <programming-language>javascript</programming-language>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Abi Hafshin Alfarouq</foaf:name>
+      <foaf:homepage>http://hafs.in</foaf:homepage>
+      <gnome:userid>abihf</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+
+</Project>

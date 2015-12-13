@@ -1,20 +1,19 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 4 -*-  */
-/*
- * jsc-value.c
+/* jsc-value.c
+ *
  * Copyright (C) 2015 Abi Hafshin <abi@hafs.in>
  *
- * glib-jsc is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * glib-jsc is distributed in the hope that it will be useful, but
+ * This file is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This file is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "jsc-glib.h"
@@ -35,13 +34,13 @@ jsc_value_init (JSCValue *jsc_value)
 {
 	jsc_value->priv = G_TYPE_INSTANCE_GET_PRIVATE (jsc_value, JSC_TYPE_VALUE, JSCValuePrivate);
 
-	/* TODO: Add initialization code here */
+
 }
 
 static void
 jsc_value_finalize (GObject *object)
 {
-	/* TODO: Add deinitalization code here */
+	g_object_unref (G_OBJECT (JSC_VALUE(object)->priv->context) );
 
 	G_OBJECT_CLASS (jsc_value_parent_class)->finalize (object);
 }
@@ -55,12 +54,13 @@ jsc_value_class_init (JSCValueClass *klass)
 }
 
 JSCValue *
-jsc_value_new_from_native(JSCContext *context, 
+jsc_value_new_from_native(JSCContext *context,
                           JSValueRef native_value)
 {
-	JSCValue *value = JSC_VALUE (g_object_new (JSC_TYPE_VALUE, NULL) );
+	JSCValue *value      = JSC_VALUE (g_object_new (JSC_TYPE_VALUE, NULL) );
 	value->priv->context = context;
-	value->priv->value = (JSValueRef)native_value;
+	value->priv->value   = (JSValueRef)native_value;
+	g_object_ref (G_OBJECT(context));
 	return value;
 }
 
@@ -71,7 +71,7 @@ jsc_value_to_native (JSCValue *value)
 }
 
 
-JSCContext *
+const JSCContext *
 jsc_value_get_context(JSCValue *value)
 {
 	return value->priv->context;
@@ -81,9 +81,10 @@ jsc_value_get_context(JSCValue *value)
 #define TO_NATIVE(v) v->priv->value
 
 JSCValueType
-jsc_value_type(JSCValue *value)
+jsc_value_get_value_type(JSCValue *value)
 {
-	return JSValueGetType (CONTEXT(value), TO_NATIVE(value));
+	// just cast it :)
+	return (JSCValueType)JSValueGetType (CONTEXT(value), TO_NATIVE(value));
 }
 
 gboolean
@@ -153,7 +154,7 @@ jsc_value_get_boolean(JSCValue *value, GError **error)
 		g_set_error_literal (error, JSC_ERROR, JSC_ERROR_CONVERSION_ERROR, _("Invalid value type"));
 		return false;
 	}
-	return JSValueToBoolean (jsc_context_to_native (value->priv->context), 
+	return JSValueToBoolean (jsc_context_to_native (value->priv->context),
 	                         value->priv->value);
 }
 
@@ -180,7 +181,7 @@ jsc_value_get_number(JSCValue *value, GError **error)
 		return 0;
 	}
 	JSValueRef exception = NULL;
-	double ret = JSValueToNumber (jsc_context_to_native (value->priv->context), 
+	double ret = JSValueToNumber (jsc_context_to_native (value->priv->context),
 	                         value->priv->value, &exception);
 	if (exception != NULL) {
 		jsc_error_set_from_exception (error, value->priv->context, exception);
@@ -214,7 +215,7 @@ jsc_value_get_string(JSCValue *value, GError **error)
 		return NULL;
 	}
 	JSValueRef exception = NULL;
-	JSStringRef string_ref = JSValueToStringCopy (jsc_context_to_native (value->priv->context), 
+	JSStringRef string_ref = JSValueToStringCopy (jsc_context_to_native (value->priv->context),
 	                                              value->priv->value, &exception);
 	if (exception != NULL) {
 		jsc_error_set_from_exception (error, value->priv->context, exception);
@@ -245,7 +246,7 @@ jsc_value_get_object(JSCValue *value, GError **error)
 		return NULL;
 	}
 	JSValueRef exception = NULL;
-	JSObjectRef obj = JSValueToObject (CONTEXT (value), 
+	JSObjectRef obj = JSValueToObject (CONTEXT (value),
 	                         value->priv->value, &exception);
 	if (exception != NULL) {
 		jsc_error_set_from_exception (error, value->priv->context, exception);

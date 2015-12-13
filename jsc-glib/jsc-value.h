@@ -1,26 +1,26 @@
-/* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 2; tab-width: 4 -*-  */
-/*
- * jsc-value.h
+/* jsc-value.c
+ *
  * Copyright (C) 2015 Abi Hafshin <abi@hafs.in>
  *
- * glib-jsc is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * glib-jsc is distributed in the hope that it will be useful, but
+ * This file is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This file is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef _JSC_VALUE_H_
 #define _JSC_VALUE_H_
 
 #include <glib-object.h>
+typedef struct _JSCObject JSCObject;
 
 G_BEGIN_DECLS
 
@@ -45,14 +45,26 @@ typedef struct _JSCValueClass JSCValueClass;
 typedef struct _JSCValue JSCValue;
 typedef struct _JSCValuePrivate JSCValuePrivate;
 
-
+/**
+ * JSCValueType:
+ * @JSC_VALUE_TYPE_UNDEFINED  : value is undefined
+ * @JSC_VALUE_TYPE_NULL       : value is null
+ * @JSC_VALUE_TYPE_NUMBER     : value contains number.
+ *                              Use #jsc_value_get_number to get it's content
+ * @JSC_VALUE_TYPE_STRING     : value contains string
+ *                              Use #jsc_value_get_string to get it's content
+ * @JSC_VALUE_TYPE_OBJECT     : value contains
+ *                              Use #jsc_value_get_object to get it's content
+ *
+ * type of value which #jsc_value_get_value_type returns
+ */
 typedef enum {
-	JSC_VALUE_TYPE_UNDEFINED,
-	JSC_VALUE_TYPE_NULL,
-	JSC_VALUE_TYPE_BOOLEAN,
-	JSC_VALUE_TYPE_NUMBER,
-	JSC_VALUE_TYPE_STRING,
-	JSC_VALUE_TYPE_OBJECT
+	JSC_VALUE_TYPE_UNDEFINED,    /*< nick=undefined >*/
+	JSC_VALUE_TYPE_NULL,         /*< nick=null >*/
+	JSC_VALUE_TYPE_BOOLEAN,      /*< nick=boolean >*/
+	JSC_VALUE_TYPE_NUMBER,       /*< nick=number >*/
+	JSC_VALUE_TYPE_STRING,       /*< nick=string >*/
+	JSC_VALUE_TYPE_OBJECT        /*< nick=object >*/
 } JSCValueType;
 
 
@@ -72,15 +84,37 @@ GType jsc_value_get_type (void) G_GNUC_CONST;
 
 //--- common
 
-JSCContext *
-jsc_value_get_context(JSCValue *value);
+/**
+ * jsc_value_get_context: (method)
+ * @value: a #JSCValue
+ *
+ * Returns: (transfer none): a #JSContext where @value was created
+ */
+const JSCContext *
+jsc_value_get_context (JSCValue *value);
 
+
+/**
+ * jsc_value_get_value_type: (method)
+ * @value: a #JSCValue
+ *
+ * Returns: type of @value
+ */
 JSCValueType
-jsc_value_type(JSCValue *value);
+jsc_value_get_value_type (JSCValue *value);
 
 
+/**
+ * jsc_value_equal: (method)
+ * @value: a #JSCValue
+ *
+ * Returns: type of @value
+ */
 gboolean
-jsc_value_equal(JSCValue *value_a, JSCValue *value_b, gboolean strict, GError **error);
+jsc_value_equal (JSCValue *value_a,
+                 JSCValue *value_b,
+                 gboolean strict,
+                 GError **error);
 
 
 
@@ -138,18 +172,18 @@ jsc_value_get_number(JSCValue *value, GError **error);
  * jsc_value_new_from_string: (constructor)
  * @ctx: a #JSCContext instance where value will be created
  * @value: string value
- * 
+ *
  * Return: new #JSCValue containg string value
  */
 JSCValue *
-jsc_value_new_from_string(JSCContext *ctx, 
+jsc_value_new_from_string(JSCContext *ctx,
                           const gchar *value);
 
 
 /**
  * jsc_value_is_string: (method)
  * @js_value: a #JSCValue
- * 
+ *
  * Return: return true if a #JSCValue is string
  */
 gboolean
@@ -159,11 +193,11 @@ jsc_value_is_string(JSCValue *value);
  * jsc_value_new_from_string: (method)
  * @js_value: a #JSCValue
  * @error: (nullable): string value
- * 
+ *
  * Return: string value
  */
 gchar *
-jsc_value_get_string(JSCValue *js_value, 
+jsc_value_get_string(JSCValue *js_value,
                      GError **error);
 
 

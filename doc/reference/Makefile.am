@@ -40,7 +40,7 @@ TESTS_ENVIRONMENT = \
 	SRCDIR=$(abs_srcdir) \
 	BUILDDIR=$(abs_builddir)
 
-TESTS = $(GTKDOC_CHECK)
+#TESTS = $(GTKDOC_CHECK)
 #endif
 
 # all-local: all-gtk-doc

@@ -31,7 +31,7 @@
   <maintainer>
     <foaf:Person>
       <foaf:name>Abi Hafshin Alfarouq</foaf:name>
-      <foaf:homepage>http://hafs.in</foaf:homepage>
+      <foaf:homepage rdf:resource="http://hafs.in/" />
       <gnome:userid>abihf</gnome:userid>
     </foaf:Person>
   </maintainer>

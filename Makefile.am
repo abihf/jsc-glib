@@ -1,9 +1,14 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = jsc-glib po tests doc
+ACLOCAL_AMFLAGS = -I m4
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
+SUBDIRS = jsc-glib doc po
+if ENABLE_TEST
+        SUBDIRS += tests
+endif
+
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-introspection
 
 
 dist_doc_DATA = \

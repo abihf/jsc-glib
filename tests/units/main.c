@@ -20,8 +20,8 @@
 #include "shared.h"
 
 #define ADD_TEST(name, func) \
-g_test_add (name, TestFixture, name, \
-fixture_set_up, func, fixture_tear_down)
+	g_test_add (name, TestFixture, name, \
+	fixture_set_up, func, fixture_tear_down)
 
 static void
 fixture_set_up (TestFixture *fixture,
@@ -38,8 +38,8 @@ fixture_tear_down (TestFixture *fixture,
 	//g_clear_object (fixture->context);
 }
 
-void
-test_context_evaluate(TestFixture *fixture, gconstpointer data);
+void test_context_evaluate(TestFixture *fixture, gconstpointer data);
+void test_context_global_object(TestFixture *fixture, gconstpointer data);
 
 int
 main (int argc, char *argv[])
@@ -50,6 +50,7 @@ main (int argc, char *argv[])
 	g_test_bug_base ("http://github.com/abihf/issues");
 
 	ADD_TEST ("/context/evaluate", test_context_evaluate);
+	ADD_TEST ("/context/global_object", test_context_global_object);
 
 	// Define the tests.
 	/*g_test_add ("/my-object/test1", MyObjectFixture, "some-user-data",

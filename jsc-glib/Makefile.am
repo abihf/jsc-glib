@@ -25,7 +25,7 @@ libjsc_glib_1_0_la_LDFLAGS = -version-info 1:0:0
 libjsc_glib_1_0_la_LIBADD = $(JSC_GLIB_LIBS)
 
 
-jscincludedir = $(includedir)/jsc-glib-1.0
+jscincludedir = $(includedir)/jsc-glib-1.0/jsc-glib
 jscinclude_HEADERS = \
 	jsc-glib.h \
 	jsc-context.h \
@@ -69,13 +69,12 @@ introspection_source = \
 
 JSC-1.0.gir: libjsc-glib-1.0.la Makefile
 
-JSC_1_0_gir_NAMESPACE = JSC
 JSC_1_0_gir_VERSION = 1.0
 JSC_1_0_gir_LIBS = libjsc-glib-1.0.la
 JSC_1_0_gir_FILES = $(introspection_source)
-JSC_1_0_gir_CFLAGS = -I$(top_srcdir)/jsc-glib -I$(top_builddir)/jsc-glib $(JSC_GLIB_CFLAGS)
+JSC_1_0_gir_CFLAGS = -I$(top_srcdir) -I$(top_builddir) $(JSC_GLIB_CFLAGS)
 JSC_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
-JSC_1_0_gir_SCANNERFLAGS = --warn-all --pkg-export jsc-glib-1.0 --c-include "jsc-glib.h"
+JSC_1_0_gir_SCANNERFLAGS = --warn-all --identifier-prefix=JSC --symbol-prefix=jsc --pkg-export jsc-glib-1.0 --c-include "jsc-glib/jsc-glib.h"
 
 girdir = $(datadir)/gir-1.0
 dist_gir_DATA = JSC-1.0.gir
@@ -83,12 +82,12 @@ dist_gir_DATA = JSC-1.0.gir
 typelibsdir = $(libdir)/girepository-1.0/
 typelibs_DATA = JSC-1.0.typelib
 
-CLEANFILES += $(dist_gir_DATA) $(typelibs_DATA)
+CLEANFILES += $(dist_gir_DATA) $(typelibs_DATA) jsc-glib-1.0.gi
 endif # HAVE_INTROSPECTION
 
 
 EXTRA_DIST = \
-        private.h \
+	private.h \
 	jsc-glib-1.0.pc.in \
 	jsc-enumtypes.c.template \
 	jsc-enumtypes.h.template

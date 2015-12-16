@@ -65,13 +65,8 @@ GOBJECT_INTROSPECTION_CHECK([0.9.5])
 dnl ***************************************************************************
 dnl Documentation
 dnl ***************************************************************************
-m4_ifdef([GTK_DOC_CHECK], [
 GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
-],[
-AM_CONDITIONAL([ENABLE_GTK_DOC], false)
-])
 
-dnl for gtk-doc
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 AC_SUBST(GLIB_PREFIX)
 

@@ -1,19 +1,23 @@
 /* jsc-context.c
+ * 
+ * This file is part of JSC-GLib
+ * Copyright (C) 2015  Abi Hafshin
  *
- * Copyright (C) 2015 Abi Hafshin <abi@hafs.in>
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This file is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 3 of the
- * License, or (at your option) any later version.
- *
- * This file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Abi Hafshin    <abi@hafs.in>
  */
 
 
@@ -86,7 +90,7 @@ jsc_context_class_init (JSCContextClass *klass)
 
 
 /**
- * jsc_context_new: (constructor)
+ * jsc_context_new:
  * 
  * create a new #JSCContext 
  * 
@@ -103,7 +107,7 @@ jsc_context_new()
 
 
 /**
- * jsc_context_new_from_native: (constructor)
+ * jsc_context_new_from_native:
  * @native_context: JSContextRef or JSGlobalContextRef from JavaScriptCore
  * 
  * create new #JSCContext from JSContextRef 
@@ -127,7 +131,7 @@ jsc_context_to_native (JSCContext *context)
 
 
 /**
- * jsc_context_get_global_object: (method)
+ * jsc_context_get_global_object:
  * @context: a #JSCContext
  * 
  * get global object that associated to this context
@@ -143,7 +147,7 @@ jsc_context_get_global_object (JSCContext *context)
 
 
 /**
- * jsc_context_evaluate_script: (method)
+ * jsc_context_evaluate_script:
  * @context: a #JSCContext
  * @script: string contains javascript to be evaluted
  * @error: set when evaluation throws exception
@@ -162,7 +166,7 @@ jsc_context_evaluate_script (JSCContext *context,
 
 
 /**
- * jsc_context_evaluate_script_full: (method)
+ * jsc_context_evaluate_script_full:
  * @context: a #JSCContext
  * @script: string contains javascript to be evaluted
  * @this_object: (nullable): value of this. If NULL, use global object

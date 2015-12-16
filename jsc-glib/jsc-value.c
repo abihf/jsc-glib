@@ -1,23 +1,38 @@
 /* jsc-value.c
+ * 
+ * This file is part of JSC-GLib
+ * Copyright (C) 2015  Abi Hafshin
  *
- * Copyright (C) 2015 Abi Hafshin <abi@hafs.in>
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This file is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 3 of the
- * License, or (at your option) any later version.
- *
- * This file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Abi Hafshin    <abi@hafs.in>
  */
 
 #include "jsc-glib.h"
 #include "private.h"
+
+/**
+ * SECTION:jsc-value
+ * @short_description: Class for storing javascript value
+ * @title: JSCValue
+ * @stability: Unstable
+ * @include: jsc-glib.h
+ *
+ * This class hold JSValueRef and it's context
+ */
+
 
 struct _JSCValuePrivate
 {
@@ -71,7 +86,13 @@ jsc_value_to_native (JSCValue *value)
 }
 
 
-const JSCContext *
+/**
+ * jsc_value_get_context:
+ * @value: a #JSCValue
+ *
+ * Returns: (transfer none): a #JSCContext where @value was created
+ */
+JSCContext *
 jsc_value_get_context(JSCValue *value)
 {
 	return value->priv->context;
@@ -80,6 +101,12 @@ jsc_value_get_context(JSCValue *value)
 #define CONTEXT(v) jsc_context_to_native (v->priv->context)
 #define TO_NATIVE(v) v->priv->value
 
+/**
+ * jsc_value_get_value_type:
+ * @value: a #JSCValue
+ *
+ * Returns: type of @value
+ */
 JSCValueType
 jsc_value_get_value_type(JSCValue *value)
 {
@@ -87,17 +114,31 @@ jsc_value_get_value_type(JSCValue *value)
 	return (JSCValueType)JSValueGetType (CONTEXT(value), TO_NATIVE(value));
 }
 
+/**
+ * jsc_value_equal:
+ * @value: a #JSCValue
+ * @other: other #JSCValue
+ * @strict: strict mode. check the type
+ * @error: (out) (nullable): error
+ *
+ * Check wether @value and @other equals
+ * 
+ * Returns: true if @value and @other equals
+ */
 gboolean
-jsc_value_equal(JSCValue *value_a, JSCValue *value_b, gboolean strict, GError **error)
+jsc_value_equal(JSCValue *value, 
+                JSCValue *other, 
+                gboolean strict, 
+                GError **error)
 {
 	JSValueRef exception = NULL;
 	gboolean result = false;
 	if (strict)
-		result = JSValueIsEqual (CONTEXT(value_a), TO_NATIVE(value_a), TO_NATIVE(value_b), &exception);
+		result = JSValueIsEqual (CONTEXT(value), TO_NATIVE(value), TO_NATIVE(other), &exception);
 	else
-		result = JSValueIsStrictEqual (CONTEXT(value_a), TO_NATIVE(value_a), TO_NATIVE(value_b));
+		result = JSValueIsStrictEqual (CONTEXT(value), TO_NATIVE(value), TO_NATIVE(other));
 	if (exception != NULL)
-		jsc_error_set_from_exception (error, value_a->priv->context, exception);
+		jsc_error_set_from_exception (error, value->priv->context, exception);
 	return result;
 }
 
@@ -192,6 +233,13 @@ jsc_value_get_number(JSCValue *value, GError **error)
 
 // ------------ string -----------------
 
+/**
+ * jsc_value_new_from_string: (constructor)
+ * @context: a #JSCContext instance where value will be created
+ * @value: string value
+ *
+ * Return: new #JSCValue containg string value
+ */
 JSCValue *
 jsc_value_new_from_string(JSCContext *context, const gchar *value)
 {
@@ -201,12 +249,25 @@ jsc_value_new_from_string(JSCContext *context, const gchar *value)
 	return jsc_value_new_from_native (context, js_value);
 }
 
+/**
+ * jsc_value_is_string:
+ * @value: a #JSCValue
+ *
+ * Return: return true if a #JSCValue is string
+ */
 gboolean
 jsc_value_is_string(JSCValue *value)
 {
 	return JSValueIsString (jsc_context_to_native (value->priv->context), value->priv->value);
 }
 
+/**
+ * jsc_value_get_string:
+ * @value: a #JSCValue
+ * @error: (nullable) (out): error
+ *
+ * Return: string value
+ */
 gchar *
 jsc_value_get_string(JSCValue *value, GError **error)
 {
@@ -238,6 +299,15 @@ jsc_value_is_object(JSCValue *value)
 	return JSValueIsNumber (CONTEXT (value), value->priv->value);
 }
 
+/**
+ * jsc_value_get_object:
+ * @value: a #JSCValue
+ * @error: error
+ * 
+ * get object from value
+ * 
+ * Returns: (transfer full): a #JSCObject. 
+ */
 JSCObject *
 jsc_value_get_object(JSCValue *value, GError **error)
 {

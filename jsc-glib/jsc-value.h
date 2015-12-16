@@ -1,21 +1,24 @@
-/* jsc-value.c
+/* jsc-value.h
+ * 
+ * This file is part of JSC-GLib
+ * Copyright (C) 2015  Abi Hafshin
  *
- * Copyright (C) 2015 Abi Hafshin <abi@hafs.in>
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This file is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 3 of the
- * License, or (at your option) any later version.
- *
- * This file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Abi Hafshin    <abi@hafs.in>
  */
-
 #ifndef _JSC_VALUE_H_
 #define _JSC_VALUE_H_
 
@@ -24,15 +27,6 @@ typedef struct _JSCObject JSCObject;
 
 G_BEGIN_DECLS
 
-/**
- * SECTION:jsc-value
- * @short_description: Class for storing javascript value
- * @title: JSCValue
- * @stability: Unstable
- * @include: jsc-glib.h
- *
- * This class hold JSValueRef and it's context
- */
 
 #define JSC_TYPE_VALUE             (jsc_value_get_type ())
 #define JSC_VALUE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), JSC_TYPE_VALUE, JSCValue))
@@ -84,35 +78,17 @@ GType jsc_value_get_type (void) G_GNUC_CONST;
 
 //--- common
 
-/**
- * jsc_value_get_context: (method)
- * @value: a #JSCValue
- *
- * Returns: (transfer none): a #JSContext where @value was created
- */
-const JSCContext *
+JSCContext *
 jsc_value_get_context (JSCValue *value);
 
 
-/**
- * jsc_value_get_value_type: (method)
- * @value: a #JSCValue
- *
- * Returns: type of @value
- */
 JSCValueType
 jsc_value_get_value_type (JSCValue *value);
 
 
-/**
- * jsc_value_equal: (method)
- * @value: a #JSCValue
- *
- * Returns: type of @value
- */
 gboolean
-jsc_value_equal (JSCValue *value_a,
-                 JSCValue *value_b,
+jsc_value_equal (JSCValue *value,
+                 JSCValue *other,
                  gboolean strict,
                  GError **error);
 
@@ -168,36 +144,16 @@ jsc_value_get_number(JSCValue *value, GError **error);
 
 //--- STRING VALUE
 
-/**
- * jsc_value_new_from_string: (constructor)
- * @ctx: a #JSCContext instance where value will be created
- * @value: string value
- *
- * Return: new #JSCValue containg string value
- */
 JSCValue *
-jsc_value_new_from_string(JSCContext *ctx,
+jsc_value_new_from_string(JSCContext *context,
                           const gchar *value);
 
 
-/**
- * jsc_value_is_string: (method)
- * @js_value: a #JSCValue
- *
- * Return: return true if a #JSCValue is string
- */
 gboolean
 jsc_value_is_string(JSCValue *value);
 
-/**
- * jsc_value_new_from_string: (method)
- * @js_value: a #JSCValue
- * @error: (nullable): string value
- *
- * Return: string value
- */
 gchar *
-jsc_value_get_string(JSCValue *js_value,
+jsc_value_get_string(JSCValue *value,
                      GError **error);
 
 

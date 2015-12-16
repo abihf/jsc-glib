@@ -1,36 +1,31 @@
 /* jsc-error.h
+ * 
+ * This file is part of JSC-GLib
+ * Copyright (C) 2015  Abi Hafshin
  *
- * Copyright (C) 2015 Abi Hafshin <abi@hafs.in>
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This file is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 3 of the
- * License, or (at your option) any later version.
- *
- * This file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Abi Hafshin    <abi@hafs.in>
  */
+
 
 
 #ifndef _JSC_ERROR_H_
 #define _JSC_ERROR_H_
 
 #include <glib.h>
-
-/**
- * SECTION:jsc-error
- * @short_description: JSC-GLib spesific error
- * @title: JSCError
- * @stability: Unstable
- * @include: jsg-glib.h
- *
- * 
- */
 
 G_BEGIN_DECLS
 
@@ -54,7 +49,7 @@ GQuark       jsc_error_quark      (void);
  * Error Quark for JSCError
 
  */
-typedef enum /*< skip >*/
+typedef enum
 {
 	JSC_ERROR_UNKNOWN,
 	JSC_ERROR_INVALID_PROPERTY_VALUE,

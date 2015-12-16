@@ -1,19 +1,23 @@
 /* jsc-object.c
+ * 
+ * This file is part of JSC-GLib
+ * Copyright (C) 2015  Abi Hafshin
  *
- * Copyright (C) 2015 Abi Hafshin <abi@hafs.in>
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This file is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 3 of the
- * License, or (at your option) any later version.
- *
- * This file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author:
+ *   Abi Hafshin    <abi@hafs.in>
  */
 
 
@@ -56,12 +60,26 @@ jsc_object_class_init (JSCObjectClass *klass)
 	object_class->finalize = jsc_object_finalize;
 }
 
-const JSCContext *
+/**
+ * jsc_object_get_context: 
+ * @object: a #JSCObject
+ *
+ * Returns: (transfer none): a #JSCContext where @object was created
+ */
+JSCContext *
 jsc_object_get_context(JSCObject *object)
 {
 	return object->priv->context;
 }
 
+/**
+ * jsc_object_to_value: 
+ * @object: a #JSCObject
+ *
+ * convert @object to #JSCValue for being used other function such as
+ *
+ * Returns: (transfer none): a #JSCValue
+ */
 JSCValue *
 jsc_object_to_value (JSCObject *object)
 {
@@ -174,7 +192,7 @@ jsc_object_set_property (JSCObject *object,
 	_set_prop (object, name, js_value, flags, error);
 }
 
-/**
+/*
  * LOL :D
  */
 static void
@@ -186,6 +204,14 @@ _value_to_value(JSCContext *ctx,
 	*(JSValueRef *)output = val;
 }
 
+/**
+ * jsc_object_get_property: 
+ * @object: a #JSCObject
+ * @name: property name
+ * @error: (out): error object when exception raised
+ *
+ * Returns: (transfer full): the property named @name of @object
+ */
 JSCValue *
 jsc_object_get_property (JSCObject *object,
                          const gchar *name,
@@ -199,6 +225,27 @@ jsc_object_get_property (JSCObject *object,
 		return NULL;
 }
 
+/**
+ * jsc_object_get_property_at: 
+ * @object: a #JSCObject
+ * @index: property name
+ * @error: (out): error object when exception raised
+ *
+ * Returns: (transfer full): the property at @index of @object
+ */
+JSCValue *
+jsc_object_get_property_at (JSCObject *object,
+                         guint index,
+                         GError **error)
+{
+	JSValueRef js_value = NULL;
+	_get_prop_at(object, index, _value_to_value, &js_value, error);
+	if (*error == NULL)
+		return jsc_value_new_from_native (object->priv->context, js_value);
+	else
+		return NULL;
+}
+
 // ----------------------------------------------------------------------------
 //        GENERATED CODE
 // ----------------------------------------------------------------------------
@@ -206,39 +253,84 @@ jsc_object_get_property (JSCObject *object,
 
 // ---- boolean
 
+/**
+ * jsc_object_set_boolean_property: 
+ * @object: a #JSCObject
+ * @name: property name
+ * @value: value to set
+ * @flags: property flags
+ * @error: (out): error object when exception raised
+ *
+ * Set property named @name of @object to @value.
+ * This method will do something similar to @object[@name] = @value;
+ */
 void
 jsc_object_set_boolean_property (JSCObject *object,
-                                 const gchar *name,
-                                 gboolean value,
-                                 JSCPropertyAttributeFlags flags,
-                                 GError **error)
+	const gchar *name,
+        gboolean value,
+        JSCPropertyAttributeFlags flags,
+        GError **error)
 {
 	_set_prop(object, name, JSValueMakeBoolean(CONTEXT (object), value), flags, error);
 }
 
+
+/**
+ * jsc_object_set_boolean_property_at: 
+ * @object: a #JSCObject
+ * @index: property index
+ * @value: value to set
+ * @error: (out): error object when exception raised
+ *
+ * Set property at index @index of @object to @value.
+ * This method will do something similar to @object[@index] = @value;
+ * 
+ */
 void
 jsc_object_set_boolean_property_at (JSCObject *object,
-                                    guint index,
-                                    gboolean value,
-                                    GError **error)
+	guint index,
+        gboolean value,
+        GError **error)
 {
 	_set_prop_at(object, index, JSValueMakeBoolean(CONTEXT (object), value), error);
 }
 
+
+/**
+ * jsc_object_get_boolean_property: 
+ * @object: a #JSCObject
+ * @name: property name
+ * @error: (out): error object when exception raised
+ *
+ * Get property named @name of @object to @value.
+ * 
+ * Returns: value of @object[@name]
+ */
 gboolean
 jsc_object_get_boolean_property (JSCObject *object,
-                                 const gchar *name,
-                                 GError **error)
+	const gchar *name,
+	GError **error)
 {
 	gboolean result;
 	_get_prop (object, name, _value_to_boolean, &result, error);
 	return result;
 }
 
+
+/**
+ * jsc_object_get_boolean_property_at: 
+ * @object: a #JSCObject
+ * @index: property index
+ * @error: (out): error object when exception raised
+ *
+ * Get property at index @index of @object to @value.
+ * 
+ * Returns: value of @object[@index]
+ */
 gboolean
 jsc_object_get_boolean_property_at (JSCObject *object,
-                                    guint index,
-                                    GError **error)
+	guint index,
+	GError **error)
 {
 	gboolean result;
 	_get_prop_at (object, index, _value_to_boolean, &result, error);
@@ -250,39 +342,84 @@ jsc_object_get_boolean_property_at (JSCObject *object,
 
 // ---- number
 
+/**
+ * jsc_object_set_number_property: 
+ * @object: a #JSCObject
+ * @name: property name
+ * @value: value to set
+ * @flags: property flags
+ * @error: (out): error object when exception raised
+ *
+ * Set property named @name of @object to @value.
+ * This method will do something similar to @object[@name] = @value;
+ */
 void
 jsc_object_set_number_property (JSCObject *object,
-                                const gchar *name,
-                                gdouble value,
-                                JSCPropertyAttributeFlags flags,
-                                GError **error)
+	const gchar *name,
+        gdouble value,
+        JSCPropertyAttributeFlags flags,
+        GError **error)
 {
 	_set_prop(object, name, JSValueMakeNumber(CONTEXT (object), value), flags, error);
 }
 
+
+/**
+ * jsc_object_set_number_property_at: 
+ * @object: a #JSCObject
+ * @index: property index
+ * @value: value to set
+ * @error: (out): error object when exception raised
+ *
+ * Set property at index @index of @object to @value.
+ * This method will do something similar to @object[@index] = @value;
+ * 
+ */
 void
 jsc_object_set_number_property_at (JSCObject *object,
-                                   guint index,
-                                   gdouble value,
-                                   GError **error)
+	guint index,
+        gdouble value,
+        GError **error)
 {
 	_set_prop_at(object, index, JSValueMakeNumber(CONTEXT (object), value), error);
 }
 
+
+/**
+ * jsc_object_get_number_property: 
+ * @object: a #JSCObject
+ * @name: property name
+ * @error: (out): error object when exception raised
+ *
+ * Get property named @name of @object to @value.
+ * 
+ * Returns: value of @object[@name]
+ */
 gdouble
 jsc_object_get_number_property (JSCObject *object,
-                                const gchar *name,
-                                GError **error)
+	const gchar *name,
+	GError **error)
 {
 	gdouble result;
 	_get_prop (object, name, _value_to_number, &result, error);
 	return result;
 }
 
+
+/**
+ * jsc_object_get_number_property_at: 
+ * @object: a #JSCObject
+ * @index: property index
+ * @error: (out): error object when exception raised
+ *
+ * Get property at index @index of @object to @value.
+ * 
+ * Returns: value of @object[@index]
+ */
 gdouble
 jsc_object_get_number_property_at (JSCObject *object,
-                                   guint index,
-                                   GError **error)
+	guint index,
+	GError **error)
 {
 	gdouble result;
 	_get_prop_at (object, index, _value_to_number, &result, error);
@@ -294,39 +431,84 @@ jsc_object_get_number_property_at (JSCObject *object,
 
 // ---- string
 
+/**
+ * jsc_object_set_string_property: 
+ * @object: a #JSCObject
+ * @name: property name
+ * @value: value to set
+ * @flags: property flags
+ * @error: (out): error object when exception raised
+ *
+ * Set property named @name of @object to @value.
+ * This method will do something similar to @object[@name] = @value;
+ */
 void
 jsc_object_set_string_property (JSCObject *object,
-                                const gchar *name,
-                                const gchar * value,
-                                JSCPropertyAttributeFlags flags,
-                                GError **error)
+	const gchar *name,
+        gchar * value,
+        JSCPropertyAttributeFlags flags,
+        GError **error)
 {
 	_set_prop(object, name, JSValueMakeStringUTF(CONTEXT (object), value), flags, error);
 }
 
+
+/**
+ * jsc_object_set_string_property_at: 
+ * @object: a #JSCObject
+ * @index: property index
+ * @value: value to set
+ * @error: (out): error object when exception raised
+ *
+ * Set property at index @index of @object to @value.
+ * This method will do something similar to @object[@index] = @value;
+ * 
+ */
 void
 jsc_object_set_string_property_at (JSCObject *object,
-                                   guint index,
-                                   const gchar * value,
-                                   GError **error)
+	guint index,
+        gchar * value,
+        GError **error)
 {
 	_set_prop_at(object, index, JSValueMakeStringUTF(CONTEXT (object), value), error);
 }
 
+
+/**
+ * jsc_object_get_string_property: 
+ * @object: a #JSCObject
+ * @name: property name
+ * @error: (out): error object when exception raised
+ *
+ * Get property named @name of @object to @value.
+ * 
+ * Returns: value of @object[@name]
+ */
 gchar *
 jsc_object_get_string_property (JSCObject *object,
-                                const gchar *name,
-                                GError **error)
+	const gchar *name,
+	GError **error)
 {
 	gchar * result;
 	_get_prop (object, name, _value_to_string, &result, error);
 	return result;
 }
 
+
+/**
+ * jsc_object_get_string_property_at: 
+ * @object: a #JSCObject
+ * @index: property index
+ * @error: (out): error object when exception raised
+ *
+ * Get property at index @index of @object to @value.
+ * 
+ * Returns: value of @object[@index]
+ */
 gchar *
 jsc_object_get_string_property_at (JSCObject *object,
-                                   guint index,
-                                   GError **error)
+	guint index,
+	GError **error)
 {
 	gchar * result;
 	_get_prop_at (object, index, _value_to_string, &result, error);
@@ -338,44 +520,86 @@ jsc_object_get_string_property_at (JSCObject *object,
 
 // ---- object
 
+/**
+ * jsc_object_set_object_property: 
+ * @object: a #JSCObject
+ * @name: property name
+ * @value: value to set
+ * @flags: property flags
+ * @error: (out): error object when exception raised
+ *
+ * Set property named @name of @object to @value.
+ * This method will do something similar to @object[@name] = @value;
+ */
 void
 jsc_object_set_object_property (JSCObject *object,
-                                const gchar *name,
-                                JSCObject * value,
-                                JSCPropertyAttributeFlags flags,
-                                GError **error)
+	const gchar *name,
+        JSCObject * value,
+        JSCPropertyAttributeFlags flags,
+        GError **error)
 {
 	_set_prop(object, name, JSValueMakeObject(CONTEXT (object), value), flags, error);
 }
 
+
+/**
+ * jsc_object_set_object_property_at: 
+ * @object: a #JSCObject
+ * @index: property index
+ * @value: value to set
+ * @error: (out): error object when exception raised
+ *
+ * Set property at index @index of @object to @value.
+ * This method will do something similar to @object[@index] = @value;
+ * 
+ */
 void
 jsc_object_set_object_property_at (JSCObject *object,
-                                   guint index,
-                                   JSCObject * value,
-                                   GError **error)
+	guint index,
+        JSCObject * value,
+        GError **error)
 {
 	_set_prop_at(object, index, JSValueMakeObject(CONTEXT (object), value), error);
 }
 
+
+/**
+ * jsc_object_get_object_property: 
+ * @object: a #JSCObject
+ * @name: property name
+ * @error: (out): error object when exception raised
+ *
+ * Get property named @name of @object to @value.
+ * 
+ * Returns: (transfer full): value of @object[@name]
+ */
 JSCObject *
 jsc_object_get_object_property (JSCObject *object,
-                                const gchar *name,
-                                GError **error)
+	const gchar *name,
+	GError **error)
 {
 	JSCObject * result;
 	_get_prop (object, name, _value_to_object, &result, error);
 	return result;
 }
 
+
+/**
+ * jsc_object_get_object_property_at: 
+ * @object: a #JSCObject
+ * @index: property index
+ * @error: (out): error object when exception raised
+ *
+ * Get property at index @index of @object to @value.
+ * 
+ * Returns: (transfer full): value of @object[@index]
+ */
 JSCObject *
 jsc_object_get_object_property_at (JSCObject *object,
-                                   guint index,
-                                   GError **error)
+	guint index,
+	GError **error)
 {
 	JSCObject * result;
 	_get_prop_at (object, index, _value_to_object, &result, error);
 	return result;
 }
-
-
-

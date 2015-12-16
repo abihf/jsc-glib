@@ -38,7 +38,7 @@
 
     </bookinfo>
 
-  <part id="json-glib">
+  <part id="jsc-glib">
     <title>JSC-GLib Overview</title>
 
     <partintro>

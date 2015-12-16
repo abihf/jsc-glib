@@ -12,6 +12,6 @@ test_SOURCES =  \
 
 test_LDADD = $(JSC_GLIB_LIBS) ../../jsc-glib/libjsc-glib-1.0.la
 
-AM_CPPFLAGS = $(JSC_GLIB_CFLAGS) -I$(top_srcdir)/jsc-glib
+AM_CPPFLAGS = $(JSC_GLIB_CFLAGS) -I$(top_srcdir)
 
 -include $(top_srcdir)/git.mk
